@@ -7,8 +7,6 @@ public class TabelaTarefa {
     private String statusTarefa;
     private int idProjeto;
 
-    public TabelaTarefa(){}
-
     @Override
     public String toString() {
         return "TabelaTarefa{" +
@@ -19,12 +17,19 @@ public class TabelaTarefa {
                 '}';
     }
 
+    public TabelaTarefa(String descricaoTarefa, String statusTarefa, int idProjeto) {
+        this.descricaoTarefa = descricaoTarefa;
+        this.statusTarefa = statusTarefa;
+        this.idProjeto = idProjeto;
+    }
+
     public TabelaTarefa(int id, String descricaoTarefa, String statusTarefa, int idProjeto) {
         this.id = id;
         this.descricaoTarefa = descricaoTarefa;
         this.statusTarefa = statusTarefa;
         this.idProjeto = idProjeto;
     }
+
 
     public int getId() {
         return id;

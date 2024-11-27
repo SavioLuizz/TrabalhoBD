@@ -12,7 +12,8 @@ public class TabelaDisciplina {
                 '}';
     }
 
-    public TabelaDisciplina() {
+    public TabelaDisciplina(String nomeDisciplina) {
+        this.nomeDisciplina = nomeDisciplina;
     }
 
     public TabelaDisciplina(int id, String nomeDisciplina) {

@@ -1,5 +1,7 @@
 package Entity;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class TabelaProjeto {
@@ -8,8 +10,6 @@ public class TabelaProjeto {
     private String descricaoProjeto;
     private Date dataInicioProj;
     private Date  dataFimProj;
-
-    public TabelaProjeto() {}
 
     @Override
     public String toString() {
@@ -20,6 +20,13 @@ public class TabelaProjeto {
                 ", dataInicioProj=" + dataInicioProj +
                 ", dataFimProj=" + dataFimProj +
                 '}';
+    }
+
+    public TabelaProjeto(String nomeProjeto, String descricaoProjeto, Date dataInicioProj, Date dataFimProj) {
+        this.nomeProjeto = nomeProjeto;
+        this.descricaoProjeto = descricaoProjeto;
+        this.dataInicioProj = dataInicioProj;
+        this.dataFimProj = dataFimProj;
     }
 
     public TabelaProjeto(int id, String nomeProjeto, String descricaoProjeto, Date dataInicioProj, Date dataFimProj) {
@@ -75,5 +82,20 @@ public class TabelaProjeto {
     }
     public java.sql.Date getDataFimSql(){
         return new java.sql.Date(this.dataFimProj.getTime());
+    }
+
+    public static TabelaProjeto parseFromSql(ResultSet resultado) {
+        try {
+            int id = resultado.getInt("id_projeto");
+            String nome = resultado.getString("nome_Projeto");
+            String decricao = resultado.getString("Descricao_Projeto");
+            Date dataInicio = resultado.getDate("Data_inicioProjeto");
+            Date dataFim = resultado.getDate("Data_fimProjeto");
+
+            return new TabelaProjeto(id, nome, decricao, dataInicio, dataFim);
+        } catch (SQLException e) {
+            System.out.println("Error on parse from SQL");
+            throw new RuntimeException(e);
+        }
     }
 }

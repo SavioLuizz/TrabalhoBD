@@ -6,14 +6,14 @@ import Entity.TabelaProjeto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 public class TabelaProjetoDAO {
 
     public void createProjeto(TabelaProjeto tabelaProjeto) {
 
-        String sql = "INSERT INTO TABELA_PROJETOS (NOME_PROJETO,DESCRICAO_PROJETO,DATA_INICIOPROJETO," +
-                "DATA_FIMPROJETO) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO TABELA_PROJETOS " +
+                "(NOME_PROJETO,DESCRICAO_PROJETO,DATA_INICIOPROJETO, DATA_FIMPROJETO) " +
+                "VALUES (?, ?, ?, ?)";
 
         PreparedStatement ps = null;
 
@@ -43,8 +43,8 @@ public class TabelaProjetoDAO {
 
             ResultSet resultado = ps.executeQuery();
             while (resultado.next()) {
-                String decricao = resultado.getString("Descricao_Projeto");
-                System.out.print(decricao);
+                TabelaProjeto projeto = TabelaProjeto.parseFromSql(resultado);
+                System.out.println(projeto);
             }
             ps.close();
             resultado.close();
@@ -52,7 +52,6 @@ public class TabelaProjetoDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     //GetOne
@@ -66,15 +65,8 @@ public class TabelaProjetoDAO {
 
             ResultSet resultado = ps.executeQuery();
             while (resultado.next()) {
-
-                int idProjeto = resultado.getInt("id_projeto");
-                String descricao = resultado.getString("Descricao_Projeto");
-                String nomeProjeto = resultado.getString("nome_projeto");
-                Date dataInicio = resultado.getDate("data_inicioProjeto");
-                Date dataFim = resultado.getDate("data_fimProjeto");
-
-                TabelaProjeto tabelaProjeto = new TabelaProjeto(idProjeto, nomeProjeto, descricao, dataInicio, dataFim);
-                System.out.print(tabelaProjeto);
+                TabelaProjeto projeto = TabelaProjeto.parseFromSql(resultado);
+                System.out.println(projeto);
             }
             ps.close();
             resultado.close();
@@ -116,8 +108,6 @@ public class TabelaProjetoDAO {
             ps.setDate(3, tabelaProjeto.getDataInicioSql());
             ps.setDate(4, tabelaProjeto.getDataFimSql());
             ps.setInt(5, id);
-            //ps.execute();
-
 
             ps.executeUpdate();
             ps.close();

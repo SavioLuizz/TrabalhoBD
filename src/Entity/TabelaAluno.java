@@ -16,7 +16,9 @@ public class TabelaAluno {
                 '}';
     }
 
-    public TabelaAluno() {
+    public TabelaAluno(String nomeAluno, Date dataNascimento) {
+        this.nomeAluno = nomeAluno;
+        this.dataNascimento = dataNascimento;
     }
 
     public TabelaAluno(int id, String nomeAluno, Date dataNascimento) {
