@@ -109,6 +109,19 @@ public class TabelaAlunoDAO {
 
     }
 
+    public boolean existeAluno(String nome) {
+        String sql = "SELECT COUNT(*) FROM TABELA_ALUNOS WHERE NOME_ALUNO = ?";
+        try (PreparedStatement ps = Conexao.getConexao().prepareStatement(sql)) {
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar aluno: " + e.getMessage());
+        }
+        return false;
+    }
 
 }
 

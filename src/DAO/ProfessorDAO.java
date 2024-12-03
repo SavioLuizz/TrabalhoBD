@@ -29,7 +29,7 @@ public class ProfessorDAO {
     }
 
     //GetAll
-    public void getProfessores() {
+    public void getProfessores(String nomeProfessor) {
         String sql = "SELECT * FROM TABELA_PROFESSORES";
         PreparedStatement ps = null;
 
@@ -105,5 +105,19 @@ public class ProfessorDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean existeProfessor(String nome) {
+        String sql = "SELECT COUNT(*) FROM TABELA_PROFESSORES WHERE NOME_PROFESSOR = ?";
+        try (PreparedStatement ps = Conexao.getConexao().prepareStatement(sql)) {
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar professor: " + e.getMessage());
+        }
+        return false;
     }
 }

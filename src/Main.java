@@ -10,6 +10,11 @@ import Entity.*;
 import java.util.Date;
 import java.util.Scanner;
 
+import DAO.*;
+import Entity.*;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -19,8 +24,7 @@ public class Main {
 
         while (true) {
             System.out.println("Escolha uma opção:");
-            System.out.println("1 - Adicionar Professor");
-            System.out.println("2 - Adicionar Aluno");
+            System.out.println("1 - Verificar Nome");
             System.out.println("0 - Sair");
 
             int opcao = scanner.nextInt();
@@ -28,48 +32,81 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Digite o nome do professor: ");
-                    String nomeProfessor = scanner.nextLine();
+                    System.out.print("Digite o nome a ser verificado: ");
+                    String nome = scanner.nextLine();
 
-                    // Criar e salvar professor
-                    Professor professor = new Professor();
-                    professor.setNomeProfessor(nomeProfessor);
-                    professorDAO.createProfessor(professor);
+                    boolean isProfessor = professorDAO.existeProfessor(nome);
+                    boolean isAluno = alunoDAO.existeAluno(nome);
 
-                    System.out.println("Professor adicionado com sucesso!");
-                    break;
+                    if (isProfessor) {
+                        System.out.println("O nome informado pertence a um PROFESSOR.");
+                    } else if (isAluno) {
+                        System.out.println("O nome informado pertence a um ALUNO.");
+                    } else {
+                        System.out.println("O nome informado não está registrado como professor ou aluno.");
+                        System.out.println("Gostaria de se cadastrar?");
+                        System.out.println("1 - Professor");
+                        System.out.println("2 - Aluno");
+                        System.out.println("3 - Sair");
 
-                case 2:
-                    System.out.print("Digite o nome do aluno: ");
-                    String nomeAluno = scanner.nextLine();
+                        int opcaoNome = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (opcaoNome) {
+                            case 1:
+                                System.out.print("Digite o nome do professor: ");
+                                String nomeProfessor = scanner.nextLine();
 
-                    System.out.print("Digite a data de nascimento do aluno (dd/MM/yyyy): ");
-                    String dataNascimento = scanner.nextLine();
+                                // Criar e salvar professor
+                                Professor professor = new Professor();
+                                professor.setNomeProfessor(nomeProfessor);
+                                professorDAO.createProfessor(professor);
 
-                    try {
-                        // Parse da data
-                        Date data = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(dataNascimento);
+                                System.out.println("Professor adicionado com sucesso!");
+                                break;
 
-                        // Criar e salvar aluno
-                        TabelaAluno aluno = new TabelaAluno(nomeAluno, data);
-                        alunoDAO.creatAluno(aluno);
+                            case 2:
+                                System.out.print("Digite o nome do aluno: ");
+                                String nomeAluno = scanner.nextLine();
 
-                        System.out.println("Aluno adicionado com sucesso!");
-                    } catch (java.text.ParseException e) {
-                        System.out.println("Erro ao processar a data. Certifique-se de usar o formato dd/MM/yyyy.");
+                                System.out.print("Digite a data de nascimento do aluno (dd/MM/yyyy): ");
+                                String dataNascimento = scanner.nextLine();
+
+                                try {
+                                    // Parse da data
+                                    Date data = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(dataNascimento);
+
+                                    // Criar e salvar aluno
+                                    TabelaAluno aluno = new TabelaAluno(nomeAluno, data);
+                                    alunoDAO.creatAluno(aluno);
+
+                                    System.out.println("Aluno adicionado com sucesso!");
+                                } catch (java.text.ParseException e) {
+                                    System.out.println("Erro ao processar a data. Certifique-se de usar o formato dd/MM/yyyy.");
+                                }
+                                break;
+
+                            case 0:
+                                System.out.println("Encerrando o programa...");
+                                scanner.close();
+                                break;
+
+                            default:
+                                System.out.println("Opção inválida! Tente novamente.");
+
+                        }
                     }
                     break;
-
                 case 0:
                     System.out.println("Encerrando o programa...");
                     scanner.close();
-                    return;
+                    break;
 
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
+}
 
 
 //    //TabelaAluno tabelaAluno = new TabelaAluno("Savio", new Date());
@@ -105,5 +142,5 @@ public class Main {
 //    //projetoDAO.getProjetos();
 //    //projetoDAO.updateProjeto(1,new TabelaProjeto(1,"Projeto03","ccccc",new Date(),new Date()));
 //    //projetoDAO.getProjeto(1);
-}
+
 

@@ -16,9 +16,9 @@ public class Professor {
                 '}';
     }
 
-    public Professor(int id, String nome_professor) {
+    public Professor(int id, String nomeProfessor) {
         this.id = id;
-        this.nomeProfessor = nome_professor;
+        this.nomeProfessor = nomeProfessor;
     }
 
     public Professor() {
